@@ -45,13 +45,14 @@
     v-model:visible="isDialogVisible"
     modal
     header="Пожалуйста, заполните все поля"
-    dismissableMask
+    dismissable-mask
     :style="{ width: '25rem' }"
   ></Dialog>
 </template>
 
 <script lang="ts" setup>
 import { computed, reactive, ref } from 'vue'
+import { useResultsStore } from '@/stores/results'
 
 import InputText from 'primevue/inputtext'
 import Tabs from 'primevue/tabs'
@@ -62,8 +63,11 @@ import TabPanel from 'primevue/tabpanel'
 import Select from 'primevue/select'
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
+import type { Form } from '@/types/results'
 
 const emit = defineEmits(['changeScreen'])
+
+const store = useResultsStore()
 
 const HEADER_TEXT =
   'Оцените ряд утверждений по следующей шкале: 1 - Никогда 2 – Редко 3 – Иногда 4 – Часто 5 – Всегда'
@@ -133,10 +137,17 @@ const isAllFilled = computed(() => {
 const isDialogVisible = ref(false)
 
 const handleChangeScreen = () => {
-  if (!isAllFilled.value) {
-    isDialogVisible.value = true
-    return
-  }
+  // if (!isAllFilled.value) {
+  //   isDialogVisible.value = true
+  //   return
+  // }
+
+  store.setField('age', ageValue.value)
+  store.setField('gender', genderValue.value)
+
+  statements.forEach((statement) => {
+    store.setField(`question${Number(statement.number) + 1}` as keyof Form, statement.value)
+  })
 
   emit('changeScreen')
 }

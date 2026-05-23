@@ -1,0 +1,145 @@
+<template>
+  <div class="burbon-wrapper">
+    <h1 class="base-title">Тест №{{ testNumber }}</h1>
+
+    <div class="timer">
+      <div>Оставшееся время:</div>
+      <span class="timer-value">{{ formattedTimer }}</span>
+    </div>
+
+    <div class="burbon-grid" :style="computeGridColumns">
+      <Button
+        v-for="(item, index) in displayedBurbonStrings"
+        :key="index"
+        @click="pickLetter(item)"
+        class="burbon-button"
+        :label="item.letter"
+        :severity="item.isPicked ? 'secondary' : 'contrast'"
+      />
+    </div>
+
+    <Button label="Закончить досрочно" @click="stopTimer" severity="secondary" />
+  </div>
+
+  <Dialog
+    v-model:visible="isDialogVisible"
+    modal
+    header="Тест окончен"
+    dismissable-mask
+    :style="{ width: '25rem' }"
+  >
+    <Button label="Далее" @click="handleChangeScreen" severity="secondary" />
+  </Dialog>
+</template>
+
+<script lang="ts" setup>
+import { computed, ref } from 'vue'
+
+import Button from 'primevue/button'
+import Dialog from 'primevue/dialog'
+
+interface BurbonLetter {
+  letter: string
+  isCorrect: boolean
+  isPicked?: boolean
+}
+
+const props = defineProps<{
+  burbonStrings: BurbonLetter[]
+  gridColumns: number
+  testNumber: number
+  // seconds
+  initialTime: number
+}>()
+
+const emit = defineEmits(['changeScreen'])
+
+const displayedBurbonStrings = ref<BurbonLetter[]>([])
+
+const formatBurbonStrings = () => {
+  displayedBurbonStrings.value = props.burbonStrings.map((item) => {
+    return {
+      letter: item.letter,
+      isCorrect: item.isCorrect,
+      isPicked: false,
+    }
+  })
+}
+
+formatBurbonStrings()
+
+const timer = ref(0)
+
+const formattedTimer = computed(() => {
+  const minutes = Math.floor(timer.value / 60)
+  const seconds = timer.value % 60
+
+  const displayMinutes = minutes < 10 ? `0${minutes}` : minutes
+  const displaySeconds = seconds < 10 ? `0${seconds}` : seconds
+
+  return `${displayMinutes}:${displaySeconds}`
+})
+
+const computeGridColumns = computed(() => {
+  return `grid-template-columns: repeat(${props.gridColumns}, minmax(15px, 50px))`
+})
+
+const isDialogVisible = ref(false)
+
+let intervalId: ReturnType<typeof setInterval> | null = null
+
+const stopTimer = () => {
+  if (!intervalId) return
+
+  isDialogVisible.value = true
+  clearInterval(intervalId)
+  intervalId = null
+}
+
+const startTimer = () => {
+  timer.value = props.initialTime
+
+  intervalId = setInterval(() => {
+    if (timer.value === 0) {
+      stopTimer()
+      return
+    }
+
+    timer.value--
+  }, 1000)
+}
+
+startTimer()
+
+const handleChangeScreen = () => {
+  emit('changeScreen')
+}
+
+const pickLetter = (letter: BurbonLetter) => {
+  if (!intervalId) return
+
+  letter.isPicked = true
+}
+</script>
+
+<style scoped>
+.burbon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+.timer {
+  text-align: center;
+}
+
+.burbon-grid {
+  display: grid;
+  justify-content: center;
+}
+
+.burbon-button {
+  aspect-ratio: 1 / 1;
+}
+</style>
