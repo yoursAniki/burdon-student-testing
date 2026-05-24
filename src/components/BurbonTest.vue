@@ -30,7 +30,9 @@
     :draggable="false"
     :close-on-escape="false"
   >
-    <Button label="Далее" @click="handleChangeScreen" severity="secondary" />
+    <div style="justify-self: end">
+      <Button label="Далее" @click="handleChangeScreen" severity="secondary" />
+    </div>
   </Dialog>
 </template>
 
