@@ -5,33 +5,20 @@
     <InputText v-model="ageValue" placeholder="Возраст" />
     <Select v-model="genderValue" :options="['Мужской', 'Женский']" placeholder="Пол" />
 
-    <div>
-      <Tabs value="0">
-        <span>{{ HEADER_TEXT }}</span>
-        <TabList>
-          <Tab value="0">Вопрос 1</Tab>
-          <Tab value="1">Вопрос 2</Tab>
-          <Tab value="2">Вопрос 3</Tab>
-          <Tab value="3">Вопрос 4</Tab>
-          <Tab value="4">Вопрос 5</Tab>
-          <Tab value="5">Вопрос 6</Tab>
-          <Tab value="6">Вопрос 7</Tab>
-          <Tab value="7">Вопрос 8</Tab>
-          <Tab value="8">Вопрос 9</Tab>
-          <Tab value="9">Вопрос 10</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel
-            v-for="statement in statements"
-            :key="statement.number"
-            :value="statement.number"
-          >
-            <span class="statement-text">{{ statement.text }}</span>
-            <Select v-model="statement.value" :options="variants" placeholder="-" />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </div>
+    <Tabs value="0">
+      <span>{{ HEADER_TEXT }}</span>
+      <TabList>
+        <Tab v-for="statement in statements" :key="statement.number" :value="statement.number"
+          >Вопрос {{ Number(statement.number) + 1 }}</Tab
+        >
+      </TabList>
+      <TabPanels>
+        <TabPanel v-for="statement in statements" :key="statement.number" :value="statement.number">
+          <span class="statement-text">{{ statement.text }}</span>
+          <Select v-model="statement.value" :options="variants" placeholder="-" />
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
 
     <Button
       @click="handleChangeScreen"
@@ -158,8 +145,10 @@ const handleChangeScreen = () => {
 .form-screen {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 1em;
+
+  width: 100%;
 }
 
 .statement-text {

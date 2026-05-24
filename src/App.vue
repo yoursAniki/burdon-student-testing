@@ -10,6 +10,10 @@ import { RouterView } from 'vue-router'
 
 <style scoped>
 .page-wrapper {
-  width: 100%;
+    max-width: 60%;
+
+  @media (max-width: 768px) {
+    max-width: 95%;
+  }
 }
 </style>
