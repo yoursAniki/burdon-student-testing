@@ -42,6 +42,7 @@ import { useResultsStore } from '@/stores/results'
 
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
+import { TIME_FOR_TEST } from '@/script/constants'
 
 interface BurbonLetter {
   letter: string
@@ -139,7 +140,7 @@ const handleChangeScreen = () => {
     correctlySelected,
     incorrectlySelected,
     unselected,
-    time: timer.value,
+    time: TIME_FOR_TEST - timer.value,
   })
 
   emit('changeScreen')

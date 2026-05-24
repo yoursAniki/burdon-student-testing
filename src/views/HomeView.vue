@@ -4,11 +4,14 @@ import { ref } from 'vue'
 import HomeScreen from '@/components/testing-screens/HomeScreen.vue'
 import FormScreen from '@/components/testing-screens/FormScreen.vue'
 import BurbonTest from '@/components/BurbonTest.vue'
+import ResultScreen from '@/components/testing-screens/ResultScreen.vue'
+import { TIME_FOR_TEST } from '@/script/constants'
 
 const screen = ref(0)
 
-const changeScreen = () => {
-  screen.value++
+const changeScreen = (screenValue: number) => {
+  if (screenValue !== undefined) screen.value = screenValue
+  else screen.value++
 }
 
 const bourdonTestStrings = [
@@ -126,7 +129,7 @@ const bourdonTestStrings = [
       { letter: 'д', isCorrect: true },
     ],
     gridColumns: 10,
-    initialTime: 120,
+    initialTime: TIME_FOR_TEST,
     screen: 2,
   },
   {
@@ -243,7 +246,7 @@ const bourdonTestStrings = [
       { letter: 'д', isCorrect: true },
     ],
     gridColumns: 10,
-    initialTime: 120,
+    initialTime: TIME_FOR_TEST,
     screen: 3,
   },
   {
@@ -360,7 +363,7 @@ const bourdonTestStrings = [
       { letter: 'д', isCorrect: true },
     ],
     gridColumns: 10,
-    initialTime: 120,
+    initialTime: TIME_FOR_TEST,
     screen: 4,
   },
 ]
@@ -380,6 +383,7 @@ const bourdonTestStrings = [
         :test-number="index + 1"
       />
     </div>
+    <ResultScreen v-if="screen === 5" @change-screen="changeScreen(1)" />
   </div>
 </template>
 

@@ -28,5 +28,22 @@ export const useResultsStore = defineStore('results', () => {
     testsResult.push(result)
   }
 
-  return { form, setField, testsResult, addTestResult }
+  const resetAllData = () => {
+    form.age = null
+    form.gender = null
+    form.question1 = null
+    form.question2 = null
+    form.question3 = null
+    form.question4 = null
+    form.question5 = null
+    form.question6 = null
+    form.question7 = null
+    form.question8 = null
+    form.question9 = null
+    form.question10 = null
+
+    testsResult.splice(0, testsResult.length)
+  }
+
+  return { form, setField, testsResult, addTestResult, resetAllData }
 })
