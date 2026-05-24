@@ -146,7 +146,7 @@ const handleChangeScreen = () => {
 const pickLetter = (letter: BurbonLetter) => {
   if (!intervalId) return
 
-  letter.isPicked = true
+  letter.isPicked = !letter.isPicked
 }
 </script>
 
