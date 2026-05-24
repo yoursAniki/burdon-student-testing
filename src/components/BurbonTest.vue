@@ -25,8 +25,10 @@
     v-model:visible="isDialogVisible"
     modal
     header="Тест окончен"
-    dismissable-mask
+    :closable="false"
     :style="{ width: '25rem' }"
+    :draggable="false"
+    :close-on-escape="false"
   >
     <Button label="Далее" @click="handleChangeScreen" severity="secondary" />
   </Dialog>
@@ -34,6 +36,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
+import { useResultsStore } from '@/stores/results'
 
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
@@ -53,6 +56,8 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['changeScreen'])
+
+const store = useResultsStore()
 
 const displayedBurbonStrings = ref<BurbonLetter[]>([])
 
@@ -111,7 +116,30 @@ const startTimer = () => {
 
 startTimer()
 
+const calculateCorrectlySelected = () => {
+  return displayedBurbonStrings.value.filter((item) => item.isPicked && item.isCorrect).length
+}
+
+const calculateIncorrectlySelected = () => {
+  return displayedBurbonStrings.value.filter((item) => item.isPicked && !item.isCorrect).length
+}
+
+const calculateUnselected = () => {
+  return displayedBurbonStrings.value.filter((item) => !item.isPicked && item.isCorrect).length
+}
+
 const handleChangeScreen = () => {
+  const correctlySelected = calculateCorrectlySelected()
+  const incorrectlySelected = calculateIncorrectlySelected()
+  const unselected = calculateUnselected()
+
+  store.addTestResult({
+    correctlySelected,
+    incorrectlySelected,
+    unselected,
+    time: timer.value,
+  })
+
   emit('changeScreen')
 }
 

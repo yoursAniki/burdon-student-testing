@@ -46,6 +46,7 @@
     modal
     header="Пожалуйста, заполните все поля"
     dismissable-mask
+    :draggable="false"
     :style="{ width: '25rem' }"
   ></Dialog>
 </template>

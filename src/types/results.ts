@@ -12,3 +12,10 @@ export interface Form {
   question9: string | null
   question10: string | null
 }
+
+export interface TestsResult {
+  correctlySelected: number
+  incorrectlySelected: number
+  unselected: number
+  time: number
+}

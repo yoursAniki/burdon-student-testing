@@ -1,8 +1,8 @@
 import { reactive } from 'vue'
 import { defineStore } from 'pinia'
-import type { Form } from '@/types/results'
+import type { Form, TestsResult } from '@/types/results'
 
-export const useResultsStore = defineStore('counter', () => {
+export const useResultsStore = defineStore('results', () => {
   const form = reactive({
     age: null as string | null,
     gender: null as string | null,
@@ -18,9 +18,15 @@ export const useResultsStore = defineStore('counter', () => {
     question10: null as string | null,
   })
 
+  const testsResult = reactive<TestsResult[]>([])
+
   function setField<K extends keyof Form>(field: K, value: string | null) {
     form[field] = value
   }
 
-  return { form, setField }
+  const addTestResult = (result: TestsResult) => {
+    testsResult.push(result)
+  }
+
+  return { form, setField, testsResult, addTestResult }
 })
