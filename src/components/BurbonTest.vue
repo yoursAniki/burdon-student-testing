@@ -24,18 +24,14 @@
   <Dialog
     v-model:visible="isDialogVisible"
     modal
-    header="Вы уверены, что хотите завершить прохождение?"
+    header="Вы уверены, что хотите закончить тест?"
     :draggable="false"
     :close-on-escape="true"
     :dismissable-mask="true"
   >
     <div style="display: flex; justify-self: end; gap: 0.5em">
-      <Button
-        label="Продолжить прохождение"
-        @click="isDialogVisible = false"
-        severity="secondary"
-      />
-      <Button label="Завершить" @click="handleChangeScreen" severity="secondary" />
+      <Button label="Продолжить" @click="isDialogVisible = false" severity="secondary" />
+      <Button label="Да, завершить" @click="handleChangeScreen" severity="secondary" />
     </div>
   </Dialog>
 </template>
