@@ -18,20 +18,24 @@
       />
     </div>
 
-    <Button label="Закончить досрочно" @click="stopTimer" severity="secondary" />
+    <Button label="Закончить досрочно" @click="isDialogVisible = true" severity="secondary" />
   </div>
 
   <Dialog
     v-model:visible="isDialogVisible"
     modal
-    header="Тест окончен"
-    :closable="false"
-    :style="{ width: '25rem' }"
+    header="Вы уверены, что хотите завершить прохождение?"
     :draggable="false"
-    :close-on-escape="false"
+    :close-on-escape="true"
+    :dismissable-mask="true"
   >
-    <div style="justify-self: end">
-      <Button label="Далее" @click="handleChangeScreen" severity="secondary" />
+    <div style="display: flex; justify-self: end; gap: 0.5em">
+      <Button
+        label="Продолжить прохождение"
+        @click="isDialogVisible = false"
+        severity="secondary"
+      />
+      <Button label="Завершить" @click="handleChangeScreen" severity="secondary" />
     </div>
   </Dialog>
 </template>
@@ -132,6 +136,8 @@ const calculateUnselected = () => {
 }
 
 const handleChangeScreen = () => {
+  stopTimer()
+
   const correctlySelected = calculateCorrectlySelected()
   const incorrectlySelected = calculateIncorrectlySelected()
   const unselected = calculateUnselected()
