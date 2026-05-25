@@ -1,6 +1,11 @@
 <template>
   <h1>Результаты тестирования</h1>
 
+  <p>
+    Учтите, что этот тест даёт лишь приблизительную оценку возможностей вашего внимания. Для
+    получения более точных результатов стоит пройти профессиональную диагностику внимания.
+  </p>
+
   <div v-for="(result, index) in store.testsResult" :key="index">
     <h2>Тест №{{ index + 1 }}</h2>
     <div>
@@ -17,7 +22,12 @@
     </div>
   </div>
 
-  <Button label="Пройти заново" class="repeat-test-button" @click="handleChangeScreen" severity="secondary" />
+  <Button
+    label="Пройти заново"
+    class="repeat-test-button"
+    @click="handleChangeScreen"
+    severity="secondary"
+  />
 </template>
 
 <script lang="ts" setup>
