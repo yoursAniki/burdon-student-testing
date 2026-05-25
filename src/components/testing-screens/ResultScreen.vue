@@ -1,12 +1,12 @@
 <template>
-  <h1>Результаты тестирования</h1>
+  <h1 class="base-title">Результаты тестирования</h1>
 
-  <p>
+  <!-- <p class="results-warn">
     Учтите, что этот тест даёт лишь приблизительную оценку возможностей вашего внимания. Для
     получения более точных результатов стоит пройти профессиональную диагностику внимания.
-  </p>
+  </p> -->
 
-  <div v-for="(result, index) in store.testsResult" :key="index">
+  <div v-for="(result, index) in store.testsResult" class="results-test" :key="index">
     <h2>Тест №{{ index + 1 }}</h2>
     <div>
       <span>Кол-во ошибочно выбранных точек: {{ result.incorrectlySelected }}</span>
@@ -21,6 +21,11 @@
       <span>Времени затрачено: {{ result.time }}с</span>
     </div>
   </div>
+
+  <p class="results-warn">
+    Учтите, что этот тест даёт лишь приблизительную оценку возможностей вашего внимания. Для
+    получения более точных результатов стоит пройти профессиональную диагностику внимания.
+  </p>
 
   <Button
     label="Пройти заново"
@@ -47,6 +52,15 @@ const handleChangeScreen = () => {
 </script>
 
 <style scoped>
+.results-warn {
+  margin: 1em 0;
+  font-size: small;
+}
+
+.results-test {
+  margin: 1em 0;
+}
+
 .repeat-test-button {
   margin-top: 1em;
 }
